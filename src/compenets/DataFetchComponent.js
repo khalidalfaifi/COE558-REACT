@@ -1,50 +1,23 @@
-import React, { useState } from 'react';
+import React from 'react';
+import QueryForm from './QueryForm'; // Adjust the import path as necessary
 
-function QueryForm({ onQuerySubmit }) {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [dataType, setDataType] = useState('');
+function TestDataFetchComponent() {
+  const handleQuerySubmit = ({ startDate, endDate, dataType }) => {
+    // For testing, just log the input values to the console
+    console.log("Form Submitted with the following values:");
+    console.log("Start Date:", startDate);
+    console.log("End Date:", endDate);
+    console.log("Data Type:", dataType);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    onQuerySubmit({ startDate, endDate, dataType });
+    // Here you would typically send a request to your server or perform some action with these values
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>
-          Start Date (YYYY-MM-DD):
-          <input
-            type="date"
-            value={startDate}
-            onChange={e => setStartDate(e.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          End Date (YYYY-MM-DD):
-          <input
-            type="date"
-            value={endDate}
-            onChange={e => setEndDate(e.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          Data Type:
-          <select value={dataType} onChange={e => setDataType(e.target.value)}>
-            <option value="HeartRate">Heart Rate</option>
-            <option value="NoiseLevel">Noise Level</option>
-            {/* Add other data types as needed */}
-          </select>
-        </label>
-      </div>
-      <button type="submit">Submit</button>
-    </form>
+    <div>
+      <h2>Test Data Fetch Form</h2>
+      <QueryForm onQuerySubmit={handleQuerySubmit} />
+    </div>
   );
 }
 
-export default QueryForm;
+export default TestDataFetchComponent;
