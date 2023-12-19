@@ -14,7 +14,7 @@ function TestDataFetchComponent() {
 
   return (
     <div>
-      <h2>Test Data Fetch Form</h2>
+      <h2>Data Fetch Form</h2>
       <QueryForm onQuerySubmit={handleQuerySubmit} />
     </div>
   );

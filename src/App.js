@@ -15,7 +15,7 @@ const App = () => {
   return (
     <div className="app-container">
       <header>
-        <h1>Monitoring App</h1>
+        <h1>Autism Monitoring App</h1>
       </header>
 
       <main>

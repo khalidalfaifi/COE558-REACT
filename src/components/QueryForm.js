@@ -14,7 +14,7 @@ function QueryForm({ onQuerySubmit }) {
     <form onSubmit={handleSubmit}>
       <div>
         <label>
-          Start Date (YYYY-MM-DD):
+          Start Date (mm-dd-yyyy):
           <input
             type="date"
             value={startDate}
@@ -24,7 +24,7 @@ function QueryForm({ onQuerySubmit }) {
       </div>
       <div>
         <label>
-          End Date (YYYY-MM-DD):
+          End Date (mm-dd-yyyy):
           <input
             type="date"
             value={endDate}
