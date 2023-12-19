@@ -1,4 +1,5 @@
 // AnimationComponent.js
+///graphql URL
 
 import React, { useState, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/client';

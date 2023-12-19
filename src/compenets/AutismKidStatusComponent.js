@@ -9,7 +9,7 @@ const AutismKidStatusComponent = () => {
     try {
       // Replace with the actual endpoint URL
       const url =
-        'https://us-central1-final-project-1-408101.cloudfunctions.net/get_AutismStatus';
+        'https://us-central1-final-project-1-408101.cloudfunctions.net/get_AutismData/status';
       const response = await axios.get(url);
       setStatus(response.data.status); // Assuming the response has a 'status' field
     } catch (err) {
