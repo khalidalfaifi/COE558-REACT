@@ -1,7 +1,11 @@
-import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
+
+const httpLink = new HttpLink({
+  uri: 'https://your-graphql-server.com/graphql', // Replace with your GraphQL server URL
+});
 
 const client = new ApolloClient({
-  uri: 'your-graphql-api-endpoint', // Replace with your GraphQL API endpoint.
+  link: httpLink,
   cache: new InMemoryCache(),
 });
 

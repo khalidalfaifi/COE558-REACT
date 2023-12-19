@@ -1,40 +1,79 @@
-// DataFetchComponent.js
-
 import React, { useState } from 'react';
-import { useQuery, gql } from '@apollo/client';
+import { useApolloClient, gql } from '@apollo/client';
 
-const GET_DATA = gql`
-  query GetData($options: DataOptionsType) {
-    fetchData(options: $options) {
-      timestamp
-      heartRate {
-        BPM
-      }
-      noiseLevel {
-        Decibels
-      }
-    }
-  }
-`;
+function QueryForm({ onQuerySubmit }) {
+  const [timeRange, setTimeRange] = useState('');
+  const [dataType, setDataType] = useState('');
 
-const DataFetchComponent = () => {
-  const [options, setOptions] = useState({});
-  const { loading, error, data } = useQuery(GET_DATA, {
-    variables: { options },
-  });
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setOptions((prevOptions) => ({
-      ...prevOptions,
-      [name]: value,
-    }));
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    onQuerySubmit({ timeRange, dataType });
   };
 
-  // Component render logic...
-  // (e.g., input fields for user options, display data)
+  return (
+    <form onSubmit={handleSubmit}>
+      <label>
+        Time Range:
+        <input
+          type="text"
+          value={timeRange}
+          onChange={e => setTimeRange(e.target.value)}
+        />
+      </label>
+      <label>
+        Data Type:
+        <select value={dataType} onChange={e => setDataType(e.target.value)}>
+          <option value="HeartRate">Heart Rate</option>
+          <option value="NoiseLevel">Noise Level</option>
+          {/* Add other data types as needed */}
+        </select>
+      </label>
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
 
-  return <div>{/* Add your input fields and data display logic here */}</div>;
-};
+function DataFetchComponent() {
+  const client = useApolloClient();
+  const [fetchedData, setFetchedData] = useState(null);
+
+  const handleQuerySubmit = async ({ timeRange, dataType }) => {
+    try {
+      const { data } = await client.query({
+        query: gql`
+          query GetAutismData($timeRange: String!, $dataType: String!) {
+            getAutismData(timeRange: $timeRange, dataType: $dataType) {
+              // Define the fields you want to fetch
+              // For example:
+              // _id
+              // UserId
+              // Timestamp
+              // HeartRate { BPM, Anomaly }
+              // NoiseLevel { Decibels, Anomaly }
+            }
+          }
+        `,
+        variables: { timeRange, dataType },
+      });
+      setFetchedData(data.getAutismData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // Handle the error appropriately
+    }
+  };
+
+  return (
+    <div>
+      <QueryForm onQuerySubmit={handleQuerySubmit} />
+      {fetchedData && (
+        <div>
+          {/* Render your fetched data here */}
+          {/* This is an example, adjust it according to your data structure */}
+          <pre>{JSON.stringify(fetchedData, null, 2)}</pre>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default DataFetchComponent;

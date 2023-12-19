@@ -10,7 +10,7 @@ const VitalsDisplayComponent = () => {
   const fetchData = async () => {
     try {
       // Replace with the actual endpoint URL
-      const url = 'https://your-api-endpoint.com/api/vitals/latest';
+      const url = 'https://us-central1-final-project-1-408101.cloudfunctions.net/function-1';
       const response = await axios.get(url);
       setHeartRate(response.data.HeartRate.BPM);
       setNoiseLevel(response.data.NoiseLevel.Decibels);
