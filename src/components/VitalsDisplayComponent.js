@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const VitalsDisplayComponent = () => {
-  const [heartRate, setHeartRate] = useState('Loading...');
-  const [noiseLevel, setNoiseLevel] = useState('Loading...');
+  const [heartRate, setHeartRate] = useState('No data available');
+  const [noiseLevel, setNoiseLevel] = useState('No data available');
   const [error, setError] = useState(null);
 
   const fetchData = async () => {
@@ -11,48 +11,57 @@ const VitalsDisplayComponent = () => {
       const url = 'https://us-central1-final-project-1-408101.cloudfunctions.net/processingdata/latest-vitals';
       const response = await axios.get(url);
 
-      // Debug: Log the entire response
-      console.log('Full response data:', response.data);
+      // Log the response for debugging
+      console.log('Response data:', response.data);
 
-      // Enhanced check for HeartRate and NoiseLevel
-      if (response.data) {
-        const { HeartRate, NoiseLevel } = response.data;
-
-        if (HeartRate && typeof HeartRate.BPM === 'number') {
-          setHeartRate(`${HeartRate.BPM} BPM`);
-        } else {
-          setHeartRate('No data');
-        }
-
-        if (NoiseLevel && typeof NoiseLevel.Decibels === 'number') {
-          setNoiseLevel(`${NoiseLevel.Decibels} dB`);
-        } else {
-          setNoiseLevel('No data');
-        }
-      } else {
-        setHeartRate('No data');
-        setNoiseLevel('No data');
+      if (!response.data) {
+        // If the response doesn't have data, set a default message
+        setHeartRate('No data available');
+        setNoiseLevel('No data available');
+        return; // Stop execution if there's no data
       }
+
+      // Safely attempt to read BPM and Decibels using optional chaining
+      const bpmValue = response.data.HeartRate?.BPM;
+      const decibelsValue = response.data.NoiseLevel?.Decibels;
+
+      // Update the state only if values are numbers
+      setHeartRate(typeof bpmValue === 'number' ? `${bpmValue} BPM` : 'No data');
+      setNoiseLevel(typeof decibelsValue === 'number' ? `${decibelsValue} dB` : 'No data');
     } catch (err) {
-      console.error(err);
-      setError(err);
-      setHeartRate('Error fetching data');
-      setNoiseLevel('Error fetching data');
+      // If there's an error, log it and set the error state
+      console.error('Error fetching vitals:', err);
+      setError('Error fetching data');
+      // Optionally, keep the last known good values or set them to a default message
+      // setHeartRate('No data available');
+      // setNoiseLevel('No data available');
     }
   };
 
   useEffect(() => {
     fetchData(); // Initial fetch
-    const intervalId = setInterval(fetchData, 5000); // Set up polling
-    return () => clearInterval(intervalId); // Clean up
+    // Set up a polling interval to fetch data every 5 seconds
+    const intervalId = setInterval(() => {
+      fetchData().catch((err) => {
+        // Handle any errors that might occur during the fetch
+        console.error('Error during polling:', err);
+        setError('Error fetching data');
+        // Optionally, keep the last known good values or set them to a default message
+        // setHeartRate('No data available');
+        // setNoiseLevel('No data available');
+      });
+    }, 5000);
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
+  // Render the component UI
   return (
     <div>
       <h2>Vitals</h2>
       <p>Heart Rate: {heartRate}</p>
       <p>Noise Level: {noiseLevel}</p>
-      {error && <p>Error: {error.message}</p>}
+      {error && <p className="error">Error: {error}</p>}
     </div>
   );
 };
