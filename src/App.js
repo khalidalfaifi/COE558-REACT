@@ -1,13 +1,11 @@
-// App.js
-
 import React from 'react';
 import { ApolloProvider } from '@apollo/client';
-import client from './apolloClient'; // Import your Apollo Client instance
-import './style.css';
-import AnimationComponent from './compenets/AnimationComponent';
-import VitalsDisplayComponent from './compenets/VitalsDisplayComponent';
-import AutismKidStatusComponent from './compenets/AutismKidStatusComponent';
-import DataFetchComponent from './compenets/DataFetchComponent';
+import client from './apolloClient'; // Ensure this path is correct
+import './style.css'; // Ensure this file exists
+import AnimationComponent from './components/AnimationComponent'; // Correct the path if necessary
+import VitalsDisplayComponent from './components/VitalsDisplayComponent'; // Correct the path if necessary
+import AutismKidStatusComponent from './components/AutismKidStatusComponent'; // Correct the path if necessary
+import DataFetchComponent from './components/DataFetchComponent'; // Correct the path if necessary
 
 const App = () => {
   return (
@@ -17,7 +15,6 @@ const App = () => {
       </header>
 
       <main>
-        {/* Wrap components that use GraphQL with ApolloProvider */}
         <ApolloProvider client={client}>
           <section className="animation-section">
             <AnimationComponent />
@@ -28,7 +25,6 @@ const App = () => {
           </section>
         </ApolloProvider>
 
-        {/* Components that do not use GraphQL */}
         <section className="vitals-section">
           <VitalsDisplayComponent />
         </section>
@@ -38,7 +34,9 @@ const App = () => {
         </section>
       </main>
 
-      <footer>{/* Footer content goes here */}</footer>
+      <footer>
+        {/* Footer content */}
+      </footer>
     </div>
   );
 };

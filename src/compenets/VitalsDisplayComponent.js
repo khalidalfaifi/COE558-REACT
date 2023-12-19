@@ -14,16 +14,23 @@ const VitalsDisplayComponent = () => {
       // Debug: Log the entire response
       console.log('Full response data:', response.data);
 
-      // Check if HeartRate and NoiseLevel exist in the response
-      if (response.data && response.data.HeartRate && typeof response.data.HeartRate.BPM === 'number') {
-        setHeartRate(`${response.data.HeartRate.BPM} BPM`);
+      // Enhanced check for HeartRate and NoiseLevel
+      if (response.data) {
+        const { HeartRate, NoiseLevel } = response.data;
+
+        if (HeartRate && typeof HeartRate.BPM === 'number') {
+          setHeartRate(`${HeartRate.BPM} BPM`);
+        } else {
+          setHeartRate('No data');
+        }
+
+        if (NoiseLevel && typeof NoiseLevel.Decibels === 'number') {
+          setNoiseLevel(`${NoiseLevel.Decibels} dB`);
+        } else {
+          setNoiseLevel('No data');
+        }
       } else {
         setHeartRate('No data');
-      }
-
-      if (response.data && response.data.NoiseLevel && typeof response.data.NoiseLevel.Decibels === 'number') {
-        setNoiseLevel(`${response.data.NoiseLevel.Decibels} dB`);
-      } else {
         setNoiseLevel('No data');
       }
     } catch (err) {
