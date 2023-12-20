@@ -1,6 +1,3 @@
-// AnimationComponent.js
-///graphql URL
-
 import React, { useState, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import {
@@ -15,21 +12,23 @@ import {
 } from 'recharts';
 
 const GET_LATEST_DATA = gql`
-  query GetLatestData {
-    latestEntries {
-      timestamp
-      heartRate {
-        BPM
-      }
-      noiseLevel {
-        Decibels
-      }
+query {
+  latestEntries {
+    timestamp
+    heartRate {
+      BPM
+      Anomaly
+    }
+    noiseLevel {
+      Decibels
+      Anomaly
     }
   }
+}
 `;
 
 const AnimationComponent = () => {
-  const { loading, error, data } = useQuery(GET_LATEST_DATA);
+  const { loading, error, data, refetch } = useQuery(GET_LATEST_DATA);
   const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
@@ -43,12 +42,18 @@ const AnimationComponent = () => {
     }
   }, [data]);
 
+  // Function to handle the click of the refresh button
+  const handleRefreshClick = () => {
+    refetch(); // Refetch the data
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div>
       <h2>Data Animation</h2>
+      <button onClick={handleRefreshClick}>Refresh Data</button> {/* Refresh button */}
       {chartData.length > 0 ? (
         <ResponsiveContainer width="100%" height={300}>
           <LineChart
@@ -74,7 +79,7 @@ const AnimationComponent = () => {
               yAxisId="left"
               type="monotone"
               dataKey="heartRate"
-              stroke="#8884d8"
+              stroke="#FF2929"
               activeDot={{ r: 8 }}
             />
             <Line
