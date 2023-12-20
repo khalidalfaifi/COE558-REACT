@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 const VitalsDisplayComponent = () => {
@@ -32,11 +32,7 @@ const VitalsDisplayComponent = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData(); // Initial fetch
-    const intervalId = setInterval(fetchData, 10000); // Fetch every 10 seconds
-    return () => clearInterval(intervalId); // Clean up
-  }, []);
+  // Removed useEffect with interval
 
   return (
     <div>
@@ -44,6 +40,7 @@ const VitalsDisplayComponent = () => {
       <p>Heart Rate: {heartRate}</p>
       <p>Noise Level: {noiseLevel}</p>
       {error && <p className="error">Error: {error}</p>}
+      <button onClick={fetchData}>Update Vitals</button> {/* Update button */}
     </div>
   );
 };
