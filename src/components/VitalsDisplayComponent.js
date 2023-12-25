@@ -8,7 +8,7 @@ const VitalsDisplayComponent = () => {
 
   const fetchData = async () => {
     try {
-      const url = 'https://gw-1jxz5puc.uc.gateway.dev/processingdata/latest-vitals';
+      const url = 'https://gw-1jxz5puc.uc.gateway.dev/latest-vitals';
       const response = await axios.get(url);
 
       console.log('API Response:', response.data);

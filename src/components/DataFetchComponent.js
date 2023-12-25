@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import QueryForm from './QueryForm'; // Adjust the import path as necessary
+import QueryForm from './QueryForm'; // Fahd makes sure for the path 
 
 function TestDataFetchComponent() {
   // State to store the latest entry
@@ -27,13 +27,13 @@ function TestDataFetchComponent() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // Add any other headers your server requires
+        
       },
       body: JSON.stringify({ query }),
     })
     .then(response => response.json())
     .then(data => {
-      // Assuming the latest entry is the first one in the array
+      
       const latest = data.data.latestEntries[0];
       setLatestEntry(latest); // Store the latest entry in the state
     })

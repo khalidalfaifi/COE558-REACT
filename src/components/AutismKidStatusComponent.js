@@ -7,11 +7,11 @@ const AutismKidStatusComponent = () => {
 
   const fetchStatus = async () => {
     try {
-      // Replace with the actual endpoint URL
+      // Khalid, update URL
       const url =
-        'https://gw-1jxz5puc.uc.gateway.dev/get_AutismStatus';
+        'https://gw-1jxz5puc.uc.gateway.dev/getAutismStatus';
       const response = await axios.get(url);
-      setStatus(response.data.status); // Assuming the response has a 'status' field
+      setStatus(response.data.status); // if field
     } catch (err) {
       setError(err);
       setStatus('Error');
@@ -21,7 +21,7 @@ const AutismKidStatusComponent = () => {
   useEffect(() => {
     fetchStatus(); // Fetch initial status
 
-    const interval = setInterval(fetchStatus, 5000); // Polling every 5 seconds
+    const interval = setInterval(fetchStatus, 5000); // Polling every 5 seconds, Khalid
 
     return () => clearInterval(interval); // Cleanup on unmount
   }, []);
